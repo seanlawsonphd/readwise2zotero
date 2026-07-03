@@ -1,0 +1,165 @@
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml">
+
+	<groupbox>
+		<label><html:h2>Readwise Sync</html:h2></label>
+
+		<html:div style="margin-bottom: 8px">
+			Imports Readwise Reader documents that have highlights into Zotero,
+			with highlights attached as a formatted note. Get your access token at
+			<html:a href="https://readwise.io/access_token">readwise.io/access_token</html:a>.
+		</html:div>
+
+		<hbox align="center">
+			<label value="Readwise access token:"/>
+			<html:input type="password" preference="extensions.readwise2zotero.token"
+			            style="width: 340px"/>
+		</hbox>
+
+		<hbox align="center" style="margin-top: 6px">
+			<label value="Target collection:"/>
+			<html:input type="text" preference="extensions.readwise2zotero.collection"
+			            style="width: 200px"/>
+		</hbox>
+
+		<checkbox label="Enrich metadata during sync (books via Open Library/ISBN; pages via translators/AI — slower)"
+		          preference="extensions.readwise2zotero.enrichOnSync"
+		          native="true" style="margin-top: 10px"/>
+
+		<checkbox label="Sync automatically in the background"
+		          preference="extensions.readwise2zotero.autoSync"
+		          native="true" style="margin-top: 4px"/>
+
+		<hbox align="center" style="margin-top: 4px">
+			<label value="Auto-sync interval (minutes):"/>
+			<html:input type="number" min="15" max="1440"
+			            preference="extensions.readwise2zotero.autoSyncMinutes"
+			            style="width: 80px"/>
+		</hbox>
+
+		<html:div style="margin-top: 10px; color: gray">
+			Run a sync anytime from Tools → Sync from Readwise. "Full Rescan"
+			re-examines every highlight in your Readwise library instead of only
+			those changed since the last sync.
+		</html:div>
+	</groupbox>
+
+	<groupbox>
+		<label><html:h2>AI Enrichment (optional)</html:h2></label>
+
+		<html:div style="margin-bottom: 8px">
+			When Zotero's site translators can't extract metadata from a page,
+			the plugin can send the page text to an AI model for extraction.
+			Pick a provider and fill in its key (or local server details) —
+			the other providers' settings are kept but unused.
+		</html:div>
+
+		<hbox align="center">
+			<label value="Provider:"/>
+			<menulist preference="extensions.readwise2zotero.aiProvider" native="true">
+				<menupopup>
+					<menuitem label="Anthropic (Claude)" value="anthropic"/>
+					<menuitem label="OpenAI" value="openai"/>
+					<menuitem label="Google Gemini" value="gemini"/>
+					<menuitem label="Ollama" value="ollama"/>
+					<menuitem label="oMLX" value="omlx"/>
+					<menuitem label="Other local (LM Studio / MLX)" value="local"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+
+		<html:div style="margin-top: 10px; font-weight: bold">Anthropic</html:div>
+		<hbox align="center">
+			<label value="API key:"/>
+			<html:input type="password" preference="extensions.readwise2zotero.anthropicKey"
+			            style="width: 320px"/>
+			<label value="Model:"/>
+			<menulist preference="extensions.readwise2zotero.anthropicModel" native="true">
+				<menupopup>
+					<menuitem label="Haiku 4.5" value="claude-haiku-4-5"/>
+					<menuitem label="Sonnet 5" value="claude-sonnet-5"/>
+					<menuitem label="Opus 4.8" value="claude-opus-4-8"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+
+		<html:div style="margin-top: 8px; font-weight: bold">OpenAI</html:div>
+		<hbox align="center">
+			<label value="API key:"/>
+			<html:input type="password" preference="extensions.readwise2zotero.openaiKey"
+			            style="width: 320px"/>
+			<label value="Model:"/>
+			<html:input type="text" preference="extensions.readwise2zotero.openaiModel"
+			            style="width: 140px"/>
+		</hbox>
+
+		<html:div style="margin-top: 8px; font-weight: bold">Google Gemini</html:div>
+		<hbox align="center">
+			<label value="API key:"/>
+			<html:input type="password" preference="extensions.readwise2zotero.geminiKey"
+			            style="width: 320px"/>
+			<label value="Model:"/>
+			<html:input type="text" preference="extensions.readwise2zotero.geminiModel"
+			            style="width: 140px"/>
+		</hbox>
+
+		<html:div style="margin-top: 8px; font-weight: bold">Ollama</html:div>
+		<hbox align="center">
+			<label value="Base URL:"/>
+			<html:input type="text" preference="extensions.readwise2zotero.ollamaBaseUrl"
+			            style="width: 220px"/>
+			<label value="Model:"/>
+			<menulist id="readwise-model-ollama" editable="true" native="true"
+			          style="width: 200px">
+				<menupopup/>
+			</menulist>
+			<button id="readwise-refresh-ollama" label="Refresh"/>
+		</hbox>
+		<hbox align="center" style="margin-top: 4px">
+			<label value="API key (optional):"/>
+			<html:input type="password" preference="extensions.readwise2zotero.ollamaKey"
+			            style="width: 260px"/>
+		</hbox>
+		<html:div style="margin-top: 4px; color: gray">
+			Local daemon needs no key. For Ollama Cloud, set the Base URL to
+			https://ollama.com/v1 and enter your ollama.com API key.
+		</html:div>
+		<html:div id="readwise-status-ollama" style="margin-top: 4px; color: gray"/>
+
+		<html:div style="margin-top: 8px; font-weight: bold">oMLX</html:div>
+		<hbox align="center">
+			<label value="Base URL:"/>
+			<html:input type="text" preference="extensions.readwise2zotero.omlxBaseUrl"
+			            style="width: 220px"/>
+			<label value="Model:"/>
+			<menulist id="readwise-model-omlx" editable="true" native="true"
+			          style="width: 200px">
+				<menupopup/>
+			</menulist>
+			<button id="readwise-refresh-omlx" label="Refresh"/>
+		</hbox>
+		<hbox align="center" style="margin-top: 4px">
+			<label value="API key (optional):"/>
+			<html:input type="password" preference="extensions.readwise2zotero.omlxKey"
+			            style="width: 260px"/>
+		</hbox>
+		<html:div id="readwise-status-omlx" style="margin-top: 4px; color: gray"/>
+
+		<html:div style="margin-top: 8px; font-weight: bold">Other local (LM Studio / MLX)</html:div>
+		<hbox align="center">
+			<label value="Base URL:"/>
+			<html:input type="text" preference="extensions.readwise2zotero.localBaseUrl"
+			            style="width: 220px"/>
+			<label value="Model:"/>
+			<menulist id="readwise-model-local" editable="true" native="true"
+			          style="width: 200px">
+				<menupopup/>
+			</menulist>
+			<button id="readwise-refresh-local" label="Refresh"/>
+		</hbox>
+		<html:div id="readwise-status-local" style="margin-top: 4px; color: gray">
+			LM Studio: http://localhost:1234/v1 ·
+			MLX (mlx_lm.server): http://localhost:8080/v1
+		</html:div>
+	</groupbox>
+</vbox>

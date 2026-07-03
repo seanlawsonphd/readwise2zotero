@@ -1,0 +1,18 @@
+{
+	"addons": {
+		"readwise2zotero@seanlawson.net": {
+			"updates": [
+				{
+					"version": "0.8.4",
+					"update_link": "https://github.com/seanlawsonphd/readwise2zotero/releases/download/v0.8.4/readwise-sync-for-zotero.xpi",
+					"applications": {
+						"zotero": {
+							"strict_min_version": "8.0",
+							"strict_max_version": "10.*"
+						}
+					}
+				}
+			]
+		}
+	}
+}

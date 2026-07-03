@@ -1,0 +1,13 @@
+# Personal sync state from the legacy CLI script — not secret, but user-specific
+state.json
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Just in case anyone adds one later
+.env
+.claude/

@@ -1,0 +1,20 @@
+{
+	"manifest_version": 2,
+	"name": "Readwise Sync",
+	"version": "0.8.4",
+	"description": "Import your full Readwise library \u2014 Reader documents plus Kindle books, podcasts, and tweets \u2014 into Zotero as items with formatted highlight notes",
+	"author": "Sean Lawson",
+	"icons": {
+		"48": "icon.svg",
+		"96": "icon.svg"
+	},
+	"homepage_url": "https://github.com/seanlawsonphd/readwise2zotero",
+	"applications": {
+		"zotero": {
+			"id": "readwise2zotero@seanlawson.net",
+			"update_url": "https://raw.githubusercontent.com/seanlawsonphd/readwise2zotero/main/update.json",
+			"strict_min_version": "8.0",
+			"strict_max_version": "10.*"
+		}
+	}
+}
