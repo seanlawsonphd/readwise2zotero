@@ -349,7 +349,6 @@ automatically.
 | `plugin/preferences.xhtml` / `preferences.js` | Settings pane and its logic (model auto-population) |
 | `plugin/prefs.js` | Default (empty) preference values |
 | `plugin/icon.svg` | Plugin icon |
-| `readwise2zotero.py` | Legacy prototype: a standalone CLI sync script predating the plugin. Uses the `readwise` CLI + Zotero's local API/connector. Kept for reference; the plugin supersedes it. |
 
 ## Acknowledgments
 
